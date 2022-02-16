@@ -1,0 +1,53 @@
+{
+  "name": "twilio-service",
+  "version": "0.0.1",
+  "description": "",
+  "author": "",
+  "private": true,
+  "license": "UNLICENSED",
+  "scripts": {
+    "typeorm": "ts-node ./node_modules/typeorm/cli -f ./src/ormconfig.ts"
+  },
+  "dependencies": {
+    "@types/node": "^17.0.18",
+    "pg": "^8.7.3",
+    "reflect-metadata": "^0.1.13",
+    "typeorm": "^0.2.41"
+  },
+  "devDependencies": {
+    "ts-node": "^10.5.0",
+    "tsconfig-paths": "^3.10.1",
+    "typescript": "^4.3.5"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "ts"
+    ],
+    "rootDir": "src",
+    "testRegex": ".*\\.spec\\.ts$",
+    "transform": {
+      "^.+\\.(t|j)s$": "ts-jest"
+    },
+    "collectCoverageFrom": [
+      "**/*.(t|j)s"
+    ],
+    "coverageDirectory": "../coverage",
+    "testEnvironment": "node"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "pre-push": "yarn prepush"
+    }
+  },
+  "lint-staged": {
+    "{src,test}/**/*.{ts,js}": [
+      "eslint --fix"
+    ]
+  },
+  "engines": {
+    "node": ">=12"
+  }
+}

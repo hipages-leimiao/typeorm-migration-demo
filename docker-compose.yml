@@ -1,0 +1,48 @@
+version: '3.5'
+
+networks:
+  app:
+    driver: bridge
+
+services:
+  # payment app
+  app:
+    build: .
+    user: root
+
+    volumes:
+      - '.:/app'
+
+    profiles: ["app"]
+
+    command:
+      - yarn
+      - typeorm
+
+    networks:
+      - app
+
+    depends_on:
+      - postgresql
+  postgresql:
+    image: bitnami/postgresql:14
+
+    networks:
+      app:
+        aliases:
+          - database
+
+    environment:
+      POSTGRESQL_DATABASE: payment
+      POSTGRESQL_USERNAME: payment
+      POSTGRESQL_PASSWORD: payment
+
+    ports:
+      - '5432:5432'
+
+    volumes:
+      - 'postgresql_data:/bitnami/postgresql'
+
+volumes:
+  postgresql_data:
+    driver: local

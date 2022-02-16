@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: typeorm-demo
+spec:
+  replicas: 1
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: typeorm-demo
+  template:
+    metadata:
+      labels:
+        app: typeorm-demo
+    spec:
+      volumes:
+      - name: cache-volume
+        emptyDir: {}
+      containers:
+        - name: postgresql
+          image: bitnami/postgresql:14
+          volumeMounts:
+            - mountPath: /bitnami/postgresql
+              name: cache-volume
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRESQL_DATABASE
+              value: payment
+            - name: POSTGRESQL_USERNAME
+              value: payment
+            - name: POSTGRESQL_PASSWORD
+              value: payment
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: typeorm-demo-service
+spec:
+  selector:
+    app: typeorm-demo
+  ports:
+    - protocol: TCP
+      port: 5432
+      targetPort: 5432

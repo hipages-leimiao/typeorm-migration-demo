@@ -1,0 +1,21 @@
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  generateName: database-migration-
+  annotations:
+    argocd.argoproj.io/hook: PreSync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+spec:
+  template:
+    spec:
+      containers:
+        - name: payment
+          image: newbmiao/typeorm_demo
+          command:
+            - yarn
+            - typeorm
+            - migration:run
+        # get realted env from k8s secret later
+      restartPolicy: Never
+  backoffLimit: 2
